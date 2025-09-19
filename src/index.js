@@ -1,32 +1,25 @@
-// src/index.js
+// src/routes/index.js
 import express from "express";
-import dotenv from "dotenv";
-import routes from "./routes/index.js"; // router utama
 
-dotenv.config();
+// Import semua sub-routes
+import medicationRoutes from "./medicationRoutes.js";
+import categoryRoutes from "./categoryRoutes.js";
+import supplierRoutes from "./supplierRoutes.js";
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-// Root route
-app.get("/", (req, res) => {
+// Daftarkan sub-routes
+router.use("/medications", medicationRoutes);
+router.use("/categories", categoryRoutes);
+router.use("/suppliers", supplierRoutes);
+
+// Optional: endpoint pengecekan route utama
+router.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "API is running!",
+    message: "API Routes are running!",
+    availableRoutes: ["/medications", "/categories", "/suppliers"],
   });
 });
 
-// Semua routes API
-app.use("/api", routes);
-
-// Port hanya dipakai saat development (local)
-// Di Vercel, port diatur otomatis
-const port = process.env.PORT || 5000;
-if (process.env.VERCEL === undefined) {
-  app.listen(port, () => {
-    console.log(`✅ Server running on http://localhost:${port}`);
-  });
-}
-
-// 👇 WAJIB untuk Vercel
-export default app;
+export default router;
