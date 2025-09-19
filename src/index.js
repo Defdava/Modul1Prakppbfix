@@ -1,7 +1,6 @@
 // src/index.js
 import express from "express";
 import dotenv from "dotenv";
-import routes from "./routes/index.js"; // router utama
 
 dotenv.config();
 
